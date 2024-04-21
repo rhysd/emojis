@@ -318,7 +318,7 @@ impl Emoji {
     /// assert!(cool.skin_tones().is_none());
     /// ```
     #[inline]
-    pub fn skin_tones(&self) -> Option<impl Iterator<Item = &Self>> {
+    pub fn skin_tones(&self) -> Option<impl Iterator<Item = &Self> + Clone> {
         let (i, n, _) = self.skin_tone?;
         Some(crate::gen::EMOJIS[i as usize..].iter().take(n as usize))
     }
@@ -403,7 +403,7 @@ impl Emoji {
     ///
     /// [gemoji]: https://github.com/github/gemoji
     #[inline]
-    pub fn shortcodes(&self) -> impl Iterator<Item = &str> {
+    pub fn shortcodes(&self) -> impl Iterator<Item = &str> + Clone {
         self.aliases.into_iter().flatten().copied()
     }
 }
@@ -470,7 +470,7 @@ impl Group {
     /// assert_eq!(iter.next().unwrap(), emojis::Group::PeopleAndBody);
     /// ```
     #[inline]
-    pub fn iter() -> impl Iterator<Item = Group> {
+    pub fn iter() -> impl Iterator<Item = Group> + Clone {
         [
             Self::SmileysAndEmotion,
             Self::PeopleAndBody,
@@ -515,7 +515,7 @@ impl Group {
 /// assert_eq!(faces, ["😀", "😃", "😄", "😁", "😆"]);
 /// ```
 #[inline]
-pub fn iter() -> impl Iterator<Item = &'static Emoji> {
+pub fn iter() -> impl Iterator<Item = &'static Emoji> + Clone {
     crate::gen::EMOJIS
         .iter()
         .filter(|emoji| matches!(emoji.skin_tone(), Some(SkinTone::Default) | None))
